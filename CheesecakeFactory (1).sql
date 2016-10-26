@@ -13,11 +13,11 @@ CREATE TABLE Customer(
   Address varchar(70) NOT NULL,
   City varchar(50) NOT NULL,
   State varchar(50) NOT NULL,
-  ZIP smallint NOT NULL);
+  ZIP varchar(5) NOT NULL);
 
 CREATE TABLE Sales(
   SalesID bigint NOT NULL PRIMARY KEY,
-  SalesDate timestamp NOT NULL,
+  SalesDate datetime NOT NULL,
   SalesTotalAmount money NOT NULL,
   CustomerID bigint NULL,
   StoreID bigint NULL);
@@ -32,7 +32,7 @@ CREATE TABLE Store(
   Address varchar(70) NOT NULL,
   City varchar (50) NOT NULL,
   State varchar (50) NOT NULL,
-  ZIP smallint NOT NULL);
+  ZIP varchar(5) NOT NULL);
 
 CREATE TABLE Dish(
   DishID bigint NOT NULL PRIMARY KEY,
@@ -48,7 +48,7 @@ CREATE TABLE Employee(
   Address varchar (100) NOT NULL,
   City varchar (50) NOT NULL,
   State varchar (50) NOT NULL,
-  ZIP smallint NOT NULL,
+  ZIP varchar(5) NOT NULL,
   StoreID bigint NULL,
   JobID bigint NULL);
 
@@ -59,7 +59,7 @@ CREATE TABLE Job(
 CREATE TABLE Ingredients(
 IngredientID bigint NOT NULL PRIMARY KEY,
 IngredientName varchar (70) NOT NULL,
-AmountofIngredient smallint NOT NULL,
+AmountofIngredient varchar(10) NOT NULL,
 Measurement varchar (20) NOT NULL,
 SupplierID bigint NULL);
 
@@ -73,7 +73,7 @@ SupplierName varchar (70) NOT NULL,
 Address varchar (100) NOT NULL,
 City varchar (50) NOT NULL,
 State varchar (50) NOT NULL,
-ZIP smallint NOT NULL);
+ZIP varchar(5) NOT NULL);
 
 ALTER TABLE Sales 
 ADD CONSTRAINT FK_Sales_Customer 
@@ -129,18 +129,7 @@ INSERT INTO Customer (CustomerID, FirstName, LastName, Gender, Birthdate, Addres
 (10, 'Conrad', 'Edrick', 'Male', '1994-01-27', '300 2nd Ave', 'Needham', 'MA', '02494'),
 (11, 'Handi', 'Herman', 'Male', '1994-03-15', '325 Speen Street', 'Natick', 'MA', '01760');
 
-INSERT INTO Employee (EmployeeID, FirstName, Lastname, Gender, Address, City, State, ZIP, Birthdate, StoreID, JobID) VALUES
-(1, 'Cady', 'Heron', 'Female', '374 Hillside Drive', 'San Diego', 'CA', '92114', '1974-01-17','6', '2'),
-(2, 'Regina', 'George', 'Female', '660 Washington Street', 'Boston', 'MA', '02111', '1959-09-28','2','5'),
-(3, 'Gretchen', 'Wieners', 'Female', '651 Kapkowski Road', 'Elizabeth', 'NJ', '07201', '1986-08-05','9','8'),
-(4, 'Janis', 'Ian', 'Female', '99 Needham Street', 'Newton', 'MA', '02461', '1982-07-10','1','1'),
-(5, 'Aaron', 'Samuels', 'Male', '12 Lisbon Street', 'Providence', 'RI', '02908', '1988-03-11','7','9'),
-(6, 'Karen', 'Smith', 'Female', '1433 14th Street', 'Santa Monica', 'CA', '90404', '1990-04-16','4','3'),
-(7, 'Kevin', 'Gnapoor', 'Male', '22 Harvey Court', 'Irvine', 'CA', '92617', '1987-07-18','5','10'),
-(8, 'Chuck', 'Bass', 'Male', '937 Jefferson Street NorthWest', 'Atlanta', 'GA', '30344', '1990-08-02','3','3'),
-(9, 'Blair', 'Waldorf', 'Female', '1070 Grant Terrace SouthEast', 'Atlanta', 'GA', '30315', '1984-11-12','10','6'),
-(10, 'Nate', 'Archibald', 'Male', '2107 Lincoln Ave', 'Fort Worth', 'TX', '76164', '1982-09-30','11','7'),
-(11, 'Serena', 'VanderWoodsen', 'Female', '1703 Westover Road', 'Austin', 'TX', '78703', '1979-05-19','8','8');
+
 
 INSERT INTO Store (StoreID, Address, City, State, ZIP) VALUES
 (1, '199 Boylston Street', 'Chestnut Hill', 'MA', '02467'),
@@ -167,6 +156,19 @@ INSERT INTO Job (JobID, JobName) VALUES
 (9, 'Busser'),
 (10,'Cashier');
 
+INSERT INTO Employee (EmployeeID, FirstName, Lastname, Gender, Address, City, State, ZIP, Birthdate, StoreID, JobID) VALUES
+(1, 'Cady', 'Heron', 'Female', '374 Hillside Drive', 'San Diego', 'CA', '92114', '1974-01-17','6', '2'),
+(2, 'Regina', 'George', 'Female', '660 Washington Street', 'Boston', 'MA', '02111', '1959-09-28','2','5'),
+(3, 'Gretchen', 'Wieners', 'Female', '651 Kapkowski Road', 'Elizabeth', 'NJ', '07201', '1986-08-05','9','8'),
+(4, 'Janis', 'Ian', 'Female', '99 Needham Street', 'Newton', 'MA', '02461', '1982-07-10','1','1'),
+(5, 'Aaron', 'Samuels', 'Male', '12 Lisbon Street', 'Providence', 'RI', '02908', '1988-03-11','7','9'),
+(6, 'Karen', 'Smith', 'Female', '1433 14th Street', 'Santa Monica', 'CA', '90404', '1990-04-16','4','3'),
+(7, 'Kevin', 'Gnapoor', 'Male', '22 Harvey Court', 'Irvine', 'CA', '92617', '1987-07-18','5','10'),
+(8, 'Chuck', 'Bass', 'Male', '937 Jefferson Street NorthWest', 'Atlanta', 'GA', '30344', '1990-08-02','3','3'),
+(9, 'Blair', 'Waldorf', 'Female', '1070 Grant Terrace SouthEast', 'Atlanta', 'GA', '30315', '1984-11-12','10','6'),
+(10, 'Nate', 'Archibald', 'Male', '2107 Lincoln Ave', 'Fort Worth', 'TX', '76164', '1982-09-30','11','7'),
+(11, 'Serena', 'VanderWoodsen', 'Female', '1703 Westover Road', 'Austin', 'TX', '78703', '1979-05-19','8','8');
+
 INSERT INTO Dish (DishID, DishName, UnitPrice) VALUES
 (1, 'Stuffed Mushrooms','$6.95'),
 (2, 'Crabcakes', '$13.95'),
@@ -179,7 +181,10 @@ INSERT INTO Dish (DishID, DishName, UnitPrice) VALUES
 (9, 'Cobb Salad','$14.95'),
 (10,'Greek Salad', '$6.95'),
 (11,'Orange Juice','$3.95'),
-(12,'Coffee','$3.95');
+(12,'Coffee','$3.95'),
+(13,'Fried Macaroni and Cheese','$10.20'),
+(14,'Smokehouse BBQ Burger','$22.05');
+
 
 INSERT INTO Sales (SalesID, SalesDate, SalesTotalAmount, CustomerID, StoreID) VALUES
 (1, '2016-08-25 11:45:58', '$50.42', '1', '1'),
@@ -194,23 +199,9 @@ INSERT INTO Sales (SalesID, SalesDate, SalesTotalAmount, CustomerID, StoreID) VA
 (10,'2016-10-19 12:59:29', '$28.13', '10','10'),
 (11,'2016-08-05 17:50:38', '$41.03', '11', '11'),
 (12,'2016-08-05 18:52:13', '$33.21', '3', '7'),
-(13,'2016-08-05 19:23:10', '$20.57', '9','8'),
-(14,'2016-08-05 11:02:11', '$23.80','8','8'),
-(15, '2016-08-03 11:02:18','$11.29','7','9');
-
-
-INSERT INTO IngredientDish (IngredientID, DishID) VALUES
-(1,5),
-(2,3),
-(3,7),
-(4,7),
-(5,8),
-(6,1),
-(7,11),
-(8,12),
-(9,10),
-(10,2),
-(11,5);
+(13,'2016-08-05 19:23:10', '$20.57', '9', '8'),
+(14,'2016-08-05 11:02:11', '$23.80', '8', '8'),
+(15,'2016-08-03 11:02:18', '$11.29', '7', '9');
 
 INSERT INTO Supplier(SupplierID, SupplierName, Address, City, State, ZIP) VALUES
 (1, 'Wegmans', '200 Boylston Street', 'Chestnut Hill', 'MA', '02467'),
@@ -237,6 +228,21 @@ INSERT INTO Ingredients(IngredientID, SupplierID, IngredientName, AmountofIngred
 (9, 9, 'Tomato', '1', 'piece'),
 (10, 10, 'Crabsticks', '2', 'piece'),
 (11, 11, 'White Jasmine Rice', '0.5', 'cup');
+
+
+INSERT INTO IngredientDish (IngredientID, DishID) VALUES
+(1,5),
+(2,3),
+(3,7),
+(4,7),
+(5,8),
+(6,1),
+(7,11),
+(8,12),
+(9,10),
+(10,2),
+(11,5);
+
 
 INSERT INTO SalesDetail(SalesDetailID, DishID, OrderQuantity) VALUES
 (1, 1, 3),
