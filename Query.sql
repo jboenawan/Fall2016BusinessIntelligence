@@ -1,7 +1,7 @@
 ﻿Use CheesecakeFactoryDB 
 Go
 
-/*1*/
+/*1. Multiple select* queries to display all records from table.*/
 
 select * 
 from Customer;
@@ -34,30 +34,44 @@ select *
 from Supplier;
 
 
-/*2*/
-Select SalesDate, max(SalesTotalAmount) as Max_Sales_Total_Amount
-from Sales
-where SalesDate like '2016-08-05 %'
-group by SalesDate;
+/*2. A query that uses aggregate function*/
+Select sum(Salestotalamount) as Sales_Total_Amount, st.state 
+from dbo.sales as sa
+join dbo.store as st
+on sa.StoreID = st.StoreID 
+group by st.state;
 
 
-/*3*/
-Select sum(SalesTotalAmount), sa.SalesDate, s.StoreId, s.Address, s.State
-from sales as sa
-inner join Store as s
-on sa.StoreID = s.StoreID
-where s.state = 'Providence'
-group by sa.SalesDate, s.StoreID, s.Address, s.State;
+/*3. A query that selects records from two (or multiple) tables using INNER JOIN*/
 
+select d.DishName, s.OrderQuantity
+from dish as d
+inner join salesdetail as s
+on d.DishID = s.dishID
+order by OrderQuantity desc;
 
-/*4*/
+/*4.A query that selects records from two (or multiple) tables using LEFT OUTER JOIN 
+(or RIGHT OUTER JOIN or FULL OUTER JOIN). Specify why outer join is neccesary in comment block. 
+Make sure your fake data could reflect the necessary. If it could not, you need to go back to part 2
+ to redo the data insertion, or you can use INSERT INTO, UPDATE or DELETE statements to modify the existing data.*/
 
+ select SalesDetailID, d.DishID, d.Dishname
+ from SalesDetail as s 
+ right outer join Dish as d
+ on s.DishID = d.DishID;
 
-/*5*/
+ /* Right Outer Join is necessary to find which dish was not ordered or in the Sales Detail table. This means that either it is not computed
+ or customer have never ordered the dish before.*/
+
+/*5. A query that uses subquery.*/
 select avg(SalesTotalAmount) as Avg_of_TotalAmount from Sales;
 
-select SalesID, SalesTotalAmount
-from Sales
+select s.SalesID, c.CustomerID, c.FirstName, c.LastName, c.BirthDate, s.SalesTotalAmount
+from Sales as s
+join Customer as c
+on c.CustomerID = s.CustomerID
 where SalesTotalAmount > (select avg(SalesTotalAmount) as Avg_of_TotalAmount 
 from Sales)
-order by SalesTotalAmount asc;
+order by SalesTotalAmount desc;
+
+/*JBTS by Josephine Boenawan and Theresia Susanto*/
